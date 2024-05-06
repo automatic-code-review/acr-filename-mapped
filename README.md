@@ -1,4 +1,4 @@
-# acr-extension-name
+# acr-filename-mapped
 
 Arquivo config.json
 
