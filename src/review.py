@@ -41,7 +41,6 @@ def review(config):
     filesByRegex = []
     for change in changes:
         fileName = getFileName(change.get('new_path'))
-        new_path = change.get('new_path')
 
         if re.match(regex_list[0], fileName):
             filesByRegex.append(fileName)
