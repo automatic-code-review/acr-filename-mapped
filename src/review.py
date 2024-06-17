@@ -42,6 +42,7 @@ def review(config):
     for change in changes:
         fileName = getFileName(change.get('new_path'))
 
+        #TODO ajustar esse metodo para validar a lista toda caso sejam implementados novos regex
         if re.match(regex_list[0], fileName):
             filesByRegex.append(fileName)
 
