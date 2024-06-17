@@ -40,19 +40,22 @@ def review(config):
 
         #TODO ajustar esse metodo para validar a lista toda caso sejam implementados novos regex
         if re.match(regex_list[0], fileName):
-            filesByRegex.append(fileName)
+            filesByRegex.append({
+                "basename": fileName,
+                "absolutePath": change.get('new_path')
+            })
 
     if len(filesByRegex) > 0:
         mappedFiles = getDataFromMappedFiles(config)
 
         for file in filesByRegex:
-            if file not in mappedFiles:
+            if file['basename'] not in mappedFiles:
                 comments.append({
-                    "id": __generate_md5(file),
-                    "comment": config['message'].replace("${FILE_NAME}", file),
+                    "id": __generate_md5(file['absolutePath']),
+                    "comment": config['message'].replace("${FILE_NAME}", file['basename']),
                     "position": {
                         "language": "",
-                        "path": file,
+                        "path": file['absolutePath'],
                         "startInLine": 1,
                         "endInLine": 1,
                         "snipset": False
