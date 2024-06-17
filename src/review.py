@@ -14,9 +14,9 @@ def getDataFromMappedFiles(config):
     worksheet = sheet.worksheet(config['merge']['project_name'])
 
     __HEADER_LINE = 0
+    __VALUE_COLUMN = 1
 
-    #TODO buscar apenas a coluna do nome dos arquivos
-    data = worksheet.get_all_values()
+    data = worksheet.col_values(__VALUE_COLUMN)
     data.pop(__HEADER_LINE)
 
     return data
@@ -48,11 +48,11 @@ def review(config):
         for file in filesByRegex:
             if file not in mappedFiles:
                 comments.append({
-                    "id": __generate_md5(path_source),
+                    "id": __generate_md5(file),
                     "comment": config['message'].replace("${FILE_NAME}", file),
                     "position": {
                         "language": "",
-                        "path": path_source,
+                        "path": file,
                         "startInLine": 1,
                         "endInLine": 1,
                         "snipset": False
