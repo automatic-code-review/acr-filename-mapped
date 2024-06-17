@@ -4,44 +4,26 @@ Arquivo config.json
 
 ```json
 {
-  "type": "",
-  "message": "",
+  "type": "GOOGLE_SHEETS",
+  "message": "Arquivo $[FILE_NAME] não mapeado",
   "regexFile": [
     ""
   ],
   "data": {
-    "credentials": {
-      "installed": {
-        "client_id": "",
-        "project_id": "",
-        "auth_uri": "",
-        "token_uri": "",
-        "auth_provider_x509_cert_url": "",
-        "client_secret": "",
-        "redirect_uris": [
-          ""
+        "credentials": {
+        },
+        "sheetId": "" 
+    },
+
+    "merge": {
+        "project_name": "",
+        "changes": [
+          {
+            "new_path": ""
+          }
         ]
-      }
     },
-
-    "authorizedUser": {
-      "refresh_token": "",
-      "token_uri": "",
-      "client_id": "",
-      "client_secret": "",
-      "scopes": [
-          "",
-          ""
-      ],
-      "universe_domain": "",
-      "account": "",
-      "expiry": ""
-    },
-
-    "sheet": "",
-    "worksheet": "",
-    "columnOfMigrationName": ""
-  }
+    "path_source": ""
 }
 
 ```
