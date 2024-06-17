@@ -55,7 +55,7 @@ def review(config):
                     "id": __generate_md5(path_source),
                     "comment": f"Arquivo {file} nao mapeado na tabela de migrations",
                     "position": {
-                        "language": "sql",
+                        "language": "",
                         "path": path_source,
                         "startInLine": 1,
                         "endInLine": 1,
