@@ -22,11 +22,7 @@ def getDataFromMappedFiles(config):
     return data
 
 def getFileName(filePath):
-    match = re.search(r'V', filePath)
-    if match:
-        return filePath[match.start():]
-
-    return filePath
+    return os.path.basename(filePath)
 
 def review(config):
     path_source = config['path_source']
