@@ -53,7 +53,7 @@ def review(config):
             if file not in mappedFiles:
                 comments.append({
                     "id": __generate_md5(path_source),
-                    "comment": f"Arquivo {file} nao mapeado na tabela de migrations",
+                    "comment": config['message'].replace("${FILE_NAME}", file),
                     "position": {
                         "language": "",
                         "path": path_source,
