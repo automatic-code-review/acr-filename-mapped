@@ -5,7 +5,7 @@ Arquivo config.json
 ```json
 {
   "type": "GOOGLE_SHEETS",
-  "message": "Arquivo $[FILE_NAME] não mapeado",
+  "message": "Arquivo ${FILE_NAME} não mapeado",
   "regexFile": [
     ""
   ],
