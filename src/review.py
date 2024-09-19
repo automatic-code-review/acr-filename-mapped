@@ -14,7 +14,10 @@ def getDataFromMappedFiles(config):
     worksheet = sheet.worksheet(config['merge']['project_name'])
 
     __HEADER_LINE = 0
-    __VALUE_COLUMN = 1
+    if 'column' in data:
+        __VALUE_COLUMN = data['column']
+    else:
+        __VALUE_COLUMN = 1
 
     data = worksheet.col_values(__VALUE_COLUMN)
     data.pop(__HEADER_LINE)
@@ -25,8 +28,6 @@ def getFileName(filePath):
     return os.path.basename(filePath)
 
 def review(config):
-    path_source = config['path_source']
-
     merge = config['merge']
     changes = merge['changes']
 
@@ -62,7 +63,6 @@ def review(config):
                     }
                 })
 
-    print(comments)
     return comments
 
 

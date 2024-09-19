@@ -10,20 +10,20 @@ Arquivo config.json
     ""
   ],
   "data": {
-        "credentials": {
-        },
-        "sheetId": "" 
+    "column": 1,
+    "credentials": {
     },
-
-    "merge": {
-        "project_name": "",
-        "changes": [
-          {
-            "new_path": ""
-          }
-        ]
-    },
-    "path_source": ""
+    "sheetId": ""
+  },
+  "merge": {
+    "project_name": "",
+    "changes": [
+      {
+        "new_path": ""
+      }
+    ]
+  },
+  "path_source": ""
 }
 
 ```
