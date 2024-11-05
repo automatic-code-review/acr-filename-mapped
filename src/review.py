@@ -51,7 +51,7 @@ def review(config):
 
 def review_by_config(config, changes, project_name):
     comments = []
-    regex_list = config['regexList']
+    regex_list = config['regexFile']
 
     filesByRegex = []
     for change in changes:
