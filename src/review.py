@@ -6,12 +6,14 @@ import hashlib
 import json
 from google.oauth2.service_account import Credentials
 
-def getDataFromMappedFiles(config):
+
+def getDataFromMappedFiles(config, project_name):
     data = config['data']
-    creds = Credentials.from_service_account_info(data['credentials'], scopes=['https://www.googleapis.com/auth/spreadsheets.readonly'])
+    creds = Credentials.from_service_account_info(data['credentials'],
+                                                  scopes=['https://www.googleapis.com/auth/spreadsheets.readonly'])
     client = gspread.authorize(creds)
     sheet = client.open_by_key(data['sheetId'])
-    worksheet = sheet.worksheet(config['merge']['project_name'])
+    worksheet = sheet.worksheet(project_name)
 
     __HEADER_LINE = 0
     if 'column' in data:
@@ -24,22 +26,38 @@ def getDataFromMappedFiles(config):
 
     return data
 
+
 def getFileName(filePath):
     return os.path.basename(filePath)
+
 
 def review(config):
     merge = config['merge']
     changes = merge['changes']
+    project_name = merge['project_name']
 
     comments = []
 
-    regex_list = config['regexFile']
+    if 'configs' in config:
+        configs = config['configs']
+    else:
+        configs = [config]
+
+    for obj_config in configs:
+        comments.extend(review_by_config(obj_config, changes, project_name))
+
+    return comments
+
+
+def review_by_config(config, changes, project_name):
+    comments = []
+    regex_list = config['regexList']
 
     filesByRegex = []
     for change in changes:
         fileName = getFileName(change.get('new_path'))
 
-        #TODO ajustar esse metodo para validar a lista toda caso sejam implementados novos regex
+        # TODO ajustar esse metodo para validar a lista toda caso sejam implementados novos regex
         if re.match(regex_list[0], fileName):
             filesByRegex.append({
                 "basename": fileName,
@@ -47,7 +65,7 @@ def review(config):
             })
 
     if len(filesByRegex) > 0:
-        mappedFiles = getDataFromMappedFiles(config)
+        mappedFiles = getDataFromMappedFiles(config, project_name)
 
         for file in filesByRegex:
             if file['basename'] not in mappedFiles:
