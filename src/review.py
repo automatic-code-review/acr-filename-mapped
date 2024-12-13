@@ -1,13 +1,12 @@
-import os
-import gspread
-import re
-import gc
 import hashlib
-import json
+import os
+import re
+
+import gspread
 from google.oauth2.service_account import Credentials
 
 
-def getDataFromMappedFiles(config, project_name):
+def get_data_from_mapped_files(config, project_name):
     data = config['data']
     creds = Credentials.from_service_account_info(data['credentials'],
                                                   scopes=['https://www.googleapis.com/auth/spreadsheets.readonly'])
@@ -27,8 +26,8 @@ def getDataFromMappedFiles(config, project_name):
     return data
 
 
-def getFileName(filePath):
-    return os.path.basename(filePath)
+def get_file_name(file_path):
+    return os.path.basename(file_path)
 
 
 def review(config):
@@ -44,32 +43,32 @@ def review(config):
         configs = [config]
 
     for obj_config in configs:
-        comments.extend(review_by_config(obj_config, changes, project_name))
+        comments.extend(review_by_config(obj_config, changes, project_name, config))
 
     return comments
 
 
-def review_by_config(config, changes, project_name):
+def review_by_config(config, changes, project_name, config_root):
     comments = []
     regex_list = config['regexFile']
 
-    filesByRegex = []
+    files_by_regex = []
     for change in changes:
-        fileName = getFileName(change.get('new_path'))
+        file_name = get_file_name(change.get('new_path'))
 
         # TODO ajustar esse metodo para validar a lista toda caso sejam implementados novos regex
-        if re.match(regex_list[0], fileName):
-            filesByRegex.append({
-                "basename": fileName,
+        if re.match(regex_list[0], file_name):
+            files_by_regex.append({
+                "basename": file_name,
                 "absolutePath": change.get('new_path')
             })
 
-    if len(filesByRegex) > 0:
-        mappedFiles = getDataFromMappedFiles(config, project_name)
+    if len(files_by_regex) > 0:
+        mapped_files = get_data_from_mapped_files(config, project_name)
 
-        for file in filesByRegex:
-            if file['basename'] not in mappedFiles:
-                comments.append({
+        for file in files_by_regex:
+            if file['basename'] not in mapped_files:
+                comment = {
                     "id": __generate_md5(file['absolutePath']),
                     "comment": config['message'].replace("${FILE_NAME}", file['basename']),
                     "position": {
@@ -79,7 +78,12 @@ def review_by_config(config, changes, project_name):
                         "endInLine": 1,
                         "snipset": False
                     }
-                })
+                }
+
+                if 'processorArgs' in config_root:
+                    comment['processorArgs'] = config_root['processorArgs']
+
+                comments.append(comment)
 
     return comments
 
